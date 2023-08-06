@@ -1,8 +1,15 @@
 import { Autocomplete, Box, TextField, SearchIcon } from '@UILibrary';
 import themeConstants from '@constants/theme';
-import defaultSnippets from '@constants/defaultSnippets';
+import { CodeSnippet } from '@customTypes/CodeSnippetTypes';
+import useSnippets from '@hooks/useSnippets';
 
 export default function Header() {
+  const { snippets, setNextSnippet } = useSnippets();
+
+  const onChange = (_: any, snippet: CodeSnippet) => {
+    setNextSnippet(snippet);
+  };
+
   return (
     <Box
       sx={{
@@ -23,6 +30,7 @@ export default function Header() {
         <Autocomplete
           disableClearable
           sx={{ width: { md: 500, xs: '100%' } }}
+          onChange={onChange}
           renderInput={(params) => (
             <TextField
               // eslint-disable-next-line react/jsx-props-no-spreading
@@ -39,7 +47,16 @@ export default function Header() {
               }}
             />
           )}
-          options={defaultSnippets.map((snippet) => snippet.title)}
+          getOptionLabel={(option) => option.title}
+          options={snippets}
+          filterOptions={(options, state) => {
+            const key = state.inputValue.toLowerCase();
+            return options.filter(
+              (snippet) =>
+                snippet.title.toLowerCase().includes(key) ||
+                snippet.description.toLowerCase().includes(key)
+            );
+          }}
         />
       </Box>
     </Box>

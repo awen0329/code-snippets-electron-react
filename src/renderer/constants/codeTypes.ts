@@ -1,4 +1,4 @@
-import { CodeTypes } from '@customTypes/codesnippet';
+import { CodeTypes } from '@customTypes/CodeSnippetTypes';
 
 const codeTypes: {
   [K in CodeTypes]: string;

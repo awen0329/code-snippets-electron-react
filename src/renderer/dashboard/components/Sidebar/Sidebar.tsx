@@ -8,14 +8,20 @@ import {
   AddIcon,
   DeleteOutlineRoundedIcon,
 } from '@UILibrary';
-import { CodeSnippet } from '@customTypes/codesnippet';
-import defaultSnippets from '@constants/defaultSnippets';
+import { CodeSnippet } from '@customTypes/CodeSnippetTypes';
+import useSnippets from '@hooks/useSnippets';
 import themeConstants from '@constants/theme';
 
 export default function Sidebar() {
-  const onNewSnippet = () => {};
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const onClick = (_: CodeSnippet) => {};
+  const { snippets, setNextSnippet } = useSnippets();
+
+  const onNewSnippet = () => {
+    setNextSnippet(undefined);
+  };
+
+  const onClick = (snippet: CodeSnippet) => {
+    setNextSnippet(snippet);
+  };
 
   return (
     <Box sx={{ width: themeConstants.sidebarWidth }}>
@@ -44,7 +50,7 @@ export default function Sidebar() {
             overflowY: 'auto',
           }}
         >
-          {defaultSnippets.map((snippet) => (
+          {snippets.map((snippet) => (
             <ListItemButton
               key={snippet.id}
               onClick={() => {

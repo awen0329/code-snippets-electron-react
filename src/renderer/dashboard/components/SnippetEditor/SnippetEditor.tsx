@@ -1,6 +1,7 @@
 /* eslint-disable react/jsx-props-no-spreading */
-import * as yup from 'yup';
-import { yupResolver } from '@hookform/resolvers/yup';
+import { useCallback, useEffect } from 'react';
+import { Controller } from 'react-hook-form';
+import { v4 as uuidv4 } from 'uuid';
 
 import themeConstants from '@constants/theme';
 import {
@@ -17,36 +18,74 @@ import {
   TextField,
   Typography,
 } from '@UILibrary';
-import { Controller, useForm } from 'react-hook-form';
-import { CodeSnippet, CodeTypes } from '@customTypes/codesnippet';
+import { CodeSnippet, CodeTypes } from '@customTypes/CodeSnippetTypes';
 import codeTypes from '@constants/codeTypes';
-import { useCallback } from 'react';
+import useSnippetForm from '@hooks/useSnippetForm';
+import useSnippets from '@hooks/useSnippets';
 import CodeHighlighter from './CodeHighlighter';
 
-const schema = yup.object().shape({
-  id: yup.string().required(),
-  title: yup.string().required('Title is required'),
-  code: yup.string().required('Code is required'),
-  description: yup.string().required('Description is required'),
-  type: yup.string<CodeTypes>().required(),
+const newSnippet: () => CodeSnippet = () => ({
+  id: uuidv4(),
+  type: 'javascript',
+  title: '',
+  description: '',
+  code: '',
 });
 
 export default function SnippetEditor() {
   const {
-    control,
-    handleSubmit,
-    watch,
-    formState: { errors, isDirty },
-  } = useForm<CodeSnippet>({
-    resolver: yupResolver<CodeSnippet>(schema),
-  });
+    currentSnippet,
+    nextSnippet,
+    setDirty,
+    setCurrentSnippet,
+    setNextSnippet,
+    saveSnippet,
+  } = useSnippets();
+
+  const { watch, control, handleSubmit, reset, errors, isValid, isDirty } =
+    useSnippetForm();
+
+  useEffect(() => {
+    reset(currentSnippet ?? newSnippet());
+  }, [currentSnippet, reset]);
+
+  useEffect(() => {
+    setDirty(isDirty);
+  }, [isDirty, setDirty]);
 
   const [code, type] = watch(['code', 'type']);
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const onSubmit = (_: CodeSnippet) => {};
+  const onSubmit = useCallback(
+    (snippet: CodeSnippet) => {
+      if (isValid) {
+        saveSnippet(snippet);
 
-  const onDiscard = useCallback(() => {}, []);
+        if (nextSnippet) {
+          setCurrentSnippet(nextSnippet);
+          setNextSnippet(undefined);
+        } else {
+          reset(snippet);
+        }
+      }
+    },
+    [
+      isValid,
+      nextSnippet,
+      reset,
+      saveSnippet,
+      setCurrentSnippet,
+      setNextSnippet,
+    ]
+  );
+
+  const onDiscard = useCallback(() => {
+    if (nextSnippet) {
+      setCurrentSnippet(nextSnippet);
+      setNextSnippet(undefined);
+    } else {
+      reset(currentSnippet ?? newSnippet());
+    }
+  }, [nextSnippet, setCurrentSnippet, setNextSnippet, reset, currentSnippet]);
 
   return (
     <Paper
@@ -62,7 +101,7 @@ export default function SnippetEditor() {
     >
       <Box sx={{ p: 2, height: '64px', display: 'flex', alignItems: 'center' }}>
         <Typography variant="h5" component="div">
-          New Snippet
+          {currentSnippet ? currentSnippet.title : 'New Snippet'}
         </Typography>
       </Box>
       <form onSubmit={handleSubmit(onSubmit)}>

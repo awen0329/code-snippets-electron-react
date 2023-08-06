@@ -17,7 +17,11 @@
     "paths": {
       "@UILibrary": ["./renderer/UILibrary"],
       "@customTypes/*": ["./renderer/types/*"],
-      "@constants/*": ["./renderer/constants/*"]
+      "@constants/*": ["./renderer/constants/*"],
+      "@actions/*": ["./renderer/actions/*"],
+      "@reducers/*": ["./renderer/reducers/*"],
+      "@contexts/*": ["./renderer/contexts/*"],
+      "@hooks/*": ["./renderer/hooks/*"]
     }
   },
   "exclude": ["test", "release/build", "release/app/dist", ".erb/dll"]

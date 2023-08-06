@@ -1,4 +1,4 @@
-import { CodeSnippets } from '@customTypes/codesnippet';
+import { CodeSnippets } from '@customTypes/CodeSnippetTypes';
 
 const defaultSnippets: CodeSnippets = [
   {

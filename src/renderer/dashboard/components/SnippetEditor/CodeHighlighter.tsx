@@ -3,7 +3,7 @@ import { docco } from 'react-syntax-highlighter/dist/esm/styles/hljs';
 import { ControllerRenderProps } from 'react-hook-form';
 
 import { Box, SxProps } from '@UILibrary';
-import { CodeSnippet } from '@customTypes/codesnippet';
+import { CodeSnippet } from '@customTypes/CodeSnippetTypes';
 
 export default function CodeHighlighter({
   code,
