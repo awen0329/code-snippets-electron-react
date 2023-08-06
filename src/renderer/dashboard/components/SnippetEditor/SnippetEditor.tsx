@@ -1,5 +1,5 @@
 /* eslint-disable react/jsx-props-no-spreading */
-import { useCallback, useEffect } from 'react';
+import { useCallback, useEffect, useRef } from 'react';
 import { Controller } from 'react-hook-form';
 import { v4 as uuidv4 } from 'uuid';
 
@@ -23,6 +23,7 @@ import codeTypes from '@constants/codeTypes';
 import useSnippetForm from '@hooks/useSnippetForm';
 import useSnippets from '@hooks/useSnippets';
 import CodeHighlighter from './CodeHighlighter';
+import SaveModal from '../modals/SaveModal';
 
 const newSnippet: () => CodeSnippet = () => ({
   id: uuidv4(),
@@ -41,6 +42,8 @@ export default function SnippetEditor() {
     setNextSnippet,
     saveSnippet,
   } = useSnippets();
+
+  const formRef = useRef<HTMLFormElement | null>(null);
 
   const { watch, control, handleSubmit, reset, errors, isValid, isDirty } =
     useSnippetForm();
@@ -80,6 +83,13 @@ export default function SnippetEditor() {
     }
   }, [nextSnippet, setCurrentSnippet, setNextSnippet, reset, currentSnippet]);
 
+  const onSave = () => {
+    formRef.current?.requestSubmit();
+    if (!isValid) {
+      setNextSnippet(undefined);
+    }
+  };
+
   return (
     <Paper
       sx={{
@@ -97,7 +107,7 @@ export default function SnippetEditor() {
           {currentSnippet ? currentSnippet.title : 'New Snippet'}
         </Typography>
       </Box>
-      <form onSubmit={handleSubmit(onSubmit)}>
+      <form ref={formRef} onSubmit={handleSubmit(onSubmit)}>
         <Grow in={isDirty}>
           <Alert
             severity="info"
@@ -190,6 +200,7 @@ export default function SnippetEditor() {
           </FormControl>
         </Box>
       </form>
+      <SaveModal open={!!nextSnippet} onSave={onSave} onDiscard={onDiscard} />
     </Paper>
   );
 }
