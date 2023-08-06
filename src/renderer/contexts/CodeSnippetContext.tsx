@@ -32,10 +32,7 @@ const CodeSnippetContext = createContext<CodeSnippetContextType>(
   {} as CodeSnippetContextType
 );
 
-// eslint-disable-next-line react/function-component-definition
-const CodeSnippetProvider: React.FC<React.PropsWithChildren> = ({
-  children,
-}) => {
+function CodeSnippetProvider({ children }: React.PropsWithChildren) {
   const [state, dispatch] = useReducer<
     Reducer<CodeSnippetContextValuesType, CodeSnippetAction>
   >(snippetReducer, initialState);
@@ -90,6 +87,6 @@ const CodeSnippetProvider: React.FC<React.PropsWithChildren> = ({
       {children}
     </CodeSnippetContext.Provider>
   );
-};
+}
 
 export { CodeSnippetContext, CodeSnippetProvider };

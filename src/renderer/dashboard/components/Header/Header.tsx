@@ -1,9 +1,16 @@
-import { Autocomplete, Box, TextField, SearchIcon } from '@UILibrary';
+import {
+  Autocomplete,
+  Box,
+  TextField,
+  SearchIcon,
+  Button,
+  ViewSidebarOutlinedIcon,
+} from '@UILibrary';
 import themeConstants from '@constants/theme';
 import { CodeSnippet } from '@customTypes/CodeSnippetTypes';
 import useSnippets from '@hooks/useSnippets';
 
-export default function Header() {
+export default function Header({ onOpen }: { onOpen?: () => void }) {
   const { snippets, setNextSnippet } = useSnippets();
 
   const onChange = (_: any, snippet: CodeSnippet) => {
@@ -27,6 +34,13 @@ export default function Header() {
           justifyContent: 'center',
         }}
       >
+        <Button
+          variant="outlined"
+          sx={{ display: { md: 'none', xs: 'inline-flex' } }}
+          onClick={() => onOpen && onOpen()}
+        >
+          <ViewSidebarOutlinedIcon />
+        </Button>
         <Autocomplete
           disableClearable
           sx={{ width: { md: 500, xs: '100%' } }}

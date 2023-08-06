@@ -14,7 +14,7 @@ import useSnippets from '@hooks/useSnippets';
 import themeConstants from '@constants/theme';
 import DeleteConfirmModal from '../modals/DeleteConfirmModal';
 
-export default function Sidebar() {
+export default function Sidebar({ onSelect }: { onSelect?: () => void }) {
   const { snippets, currentSnippet, setNextSnippet, removeSnippet } =
     useSnippets();
 
@@ -24,10 +24,12 @@ export default function Sidebar() {
 
   const onNewSnippet = () => {
     setNextSnippet(undefined);
+    if (onSelect) onSelect();
   };
 
   const onClick = (snippet: CodeSnippet) => {
     setNextSnippet(snippet);
+    if (onSelect) onSelect();
   };
 
   return (
