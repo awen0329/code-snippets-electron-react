@@ -33,7 +33,6 @@ export default function Header() {
           onChange={onChange}
           renderInput={(params) => (
             <TextField
-              // eslint-disable-next-line react/jsx-props-no-spreading
               {...params}
               label={
                 <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>

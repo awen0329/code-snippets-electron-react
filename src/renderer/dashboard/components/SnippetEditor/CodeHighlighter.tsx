@@ -1,4 +1,3 @@
-/* eslint-disable react/jsx-props-no-spreading */
 import SyntaxHighlighter from 'react-syntax-highlighter';
 import { docco } from 'react-syntax-highlighter/dist/esm/styles/hljs';
 import { ControllerRenderProps } from 'react-hook-form';

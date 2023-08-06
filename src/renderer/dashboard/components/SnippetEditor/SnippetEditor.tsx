@@ -1,4 +1,3 @@
-/* eslint-disable react/jsx-props-no-spreading */
 import { useCallback, useEffect, useRef } from 'react';
 import { Controller } from 'react-hook-form';
 import { v4 as uuidv4 } from 'uuid';
