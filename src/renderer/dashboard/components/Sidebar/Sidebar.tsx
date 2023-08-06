@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import {
   Box,
   Button,
@@ -11,9 +12,15 @@ import {
 import { CodeSnippet } from '@customTypes/CodeSnippetTypes';
 import useSnippets from '@hooks/useSnippets';
 import themeConstants from '@constants/theme';
+import DeleteConfirmModal from '../modals/DeleteConfirmModal';
 
 export default function Sidebar() {
-  const { snippets, setNextSnippet } = useSnippets();
+  const { snippets, currentSnippet, setNextSnippet, removeSnippet } =
+    useSnippets();
+
+  const [selectedSnippet, setSelectedSnippet] = useState<CodeSnippet | null>(
+    null
+  );
 
   const onNewSnippet = () => {
     setNextSnippet(undefined);
@@ -53,6 +60,7 @@ export default function Sidebar() {
           {snippets.map((snippet) => (
             <ListItemButton
               key={snippet.id}
+              selected={snippet === currentSnippet}
               onClick={() => {
                 onClick(snippet);
               }}
@@ -67,6 +75,7 @@ export default function Sidebar() {
                   minWidth: '32px',
                 }}
                 onClick={(e) => {
+                  setSelectedSnippet(snippet);
                   e.stopPropagation();
                 }}
               >
@@ -76,6 +85,16 @@ export default function Sidebar() {
           ))}
         </List>
       </Box>
+      <DeleteConfirmModal
+        open={!!selectedSnippet}
+        onOK={() => {
+          if (selectedSnippet) removeSnippet(selectedSnippet);
+          setSelectedSnippet(null);
+        }}
+        onCancel={() => {
+          setSelectedSnippet(null);
+        }}
+      />
     </Box>
   );
 }
