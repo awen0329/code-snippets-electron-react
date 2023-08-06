@@ -2,6 +2,7 @@ import React, {
   Reducer,
   createContext,
   useCallback,
+  useEffect,
   useMemo,
   useReducer,
 } from 'react';
@@ -36,6 +37,15 @@ function CodeSnippetProvider({ children }: React.PropsWithChildren) {
   const [state, dispatch] = useReducer<
     Reducer<CodeSnippetContextValuesType, CodeSnippetAction>
   >(snippetReducer, initialState);
+
+  // interact with electron local store
+  useEffect(() => {
+    window.electron.ipcRenderer.sendMessage('load');
+
+    window.electron.ipcRenderer.on('load', (args: any) => {
+      dispatch({ type: 'SET_CODE_SNIPPETS', payload: args });
+    });
+  }, []);
 
   const saveSnippet = useCallback(
     (snippet: CodeSnippet) => {

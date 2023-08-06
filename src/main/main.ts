@@ -14,6 +14,7 @@ import { autoUpdater } from 'electron-updater';
 import log from 'electron-log';
 import MenuBuilder from './menu';
 import { resolveHtmlPath } from './util';
+import InitStore from './store';
 
 class AppUpdater {
   constructor() {
@@ -22,6 +23,8 @@ class AppUpdater {
     autoUpdater.checkForUpdatesAndNotify();
   }
 }
+
+InitStore(ipcMain);
 
 let mainWindow: BrowserWindow | null = null;
 

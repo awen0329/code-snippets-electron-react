@@ -17,20 +17,22 @@ function snippetReducer(
   switch (type) {
     case SET_CODE_SNIPPETS:
       return { snippets: payload, isDirty: false };
-    case ADD_CODE_SNIPPET:
-      return { ...state, snippets: [...state.snippets, payload] };
-    case UPDATE_CODE_SNIPPET:
-      return {
-        ...state,
-        snippets: state.snippets.map((snippet) =>
-          snippet.id === payload.id ? payload : snippet
-        ),
-      };
-    case REMOVE_CODE_SNIPPET:
-      return {
-        ...state,
-        snippets: state.snippets.filter((snippet) => snippet.id !== payload),
-      };
+    case ADD_CODE_SNIPPET: {
+      const tmp = [...state.snippets, payload];
+      window.electron.ipcRenderer.sendMessage('save', tmp);
+      return { ...state, snippets: tmp };
+    }
+    case UPDATE_CODE_SNIPPET: {
+      const tmp = state.snippets.map((snippet) =>
+        snippet.id === payload.id ? payload : snippet
+      );
+      window.electron.ipcRenderer.sendMessage('save', tmp);
+      return { ...state, snippets: tmp };
+    }
+    case REMOVE_CODE_SNIPPET: {
+      const tmp = state.snippets.filter((snippet) => snippet.id !== payload);
+      return { ...state, snippets: tmp };
+    }
     case SET_CURRENT_SNIPPET:
       return {
         ...state,

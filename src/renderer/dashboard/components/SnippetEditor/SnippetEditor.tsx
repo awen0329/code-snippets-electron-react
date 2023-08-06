@@ -177,7 +177,7 @@ export default function SnippetEditor() {
                     width: '100%',
                     minHeight: '120px',
                     overflowY: 'auto',
-                    height: `calc(100vh - ${themeConstants.headerHeight} - 400px)`,
+                    height: `calc(100vh - ${themeConstants.headerHeight} - 410px)`,
                   }}
                   field={field}
                 />
