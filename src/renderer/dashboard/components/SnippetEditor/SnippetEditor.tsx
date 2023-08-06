@@ -64,18 +64,11 @@ export default function SnippetEditor() {
           setCurrentSnippet(nextSnippet);
           setNextSnippet(undefined);
         } else {
-          reset(snippet);
+          setCurrentSnippet(snippet);
         }
       }
     },
-    [
-      isValid,
-      nextSnippet,
-      reset,
-      saveSnippet,
-      setCurrentSnippet,
-      setNextSnippet,
-    ]
+    [isValid, nextSnippet, saveSnippet, setCurrentSnippet, setNextSnippet]
   );
 
   const onDiscard = useCallback(() => {
@@ -172,7 +165,6 @@ export default function SnippetEditor() {
                   code={code}
                   type={type}
                   sx={{
-                    position: 'relative',
                     width: '100%',
                     minHeight: '120px',
                     overflowY: 'auto',
