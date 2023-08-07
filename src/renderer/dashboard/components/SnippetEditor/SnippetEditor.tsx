@@ -106,7 +106,11 @@ export default function SnippetEditor() {
           {currentSnippet ? currentSnippet.title : 'New Snippet'}
         </Typography>
       </Box>
-      <form ref={formRef} onSubmit={handleSubmit(onSubmit)}>
+      <form
+        ref={formRef}
+        onSubmit={handleSubmit(onSubmit)}
+        data-testid="snippet-form"
+      >
         <Grow in={isDirty}>
           <Alert
             severity="info"
@@ -140,7 +144,9 @@ export default function SnippetEditor() {
                 name="title"
                 control={control}
                 defaultValue=""
-                render={({ field }) => <TextField fullWidth {...field} />}
+                render={({ field }) => (
+                  <TextField fullWidth {...field} data-testid="snippet-title" />
+                )}
               />
               <FormHelperText>{errors?.title?.message}</FormHelperText>
             </FormControl>

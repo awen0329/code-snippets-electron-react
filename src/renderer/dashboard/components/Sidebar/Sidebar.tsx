@@ -58,6 +58,7 @@ export default function Sidebar({ onSelect }: { onSelect?: () => void }) {
             height: 'calc(100vh - 110px)',
             overflowY: 'auto',
           }}
+          data-testid="sidebar-snippet-list"
         >
           {snippets.map((snippet) => (
             <ListItemButton
