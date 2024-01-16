@@ -5,10 +5,6 @@ This application allows users to create and update and delete snippets and show 
 
 1.0.0
 
-## Author
-
-Andrus Wen
-
 ## Design Decisions
 
 I started from `Electron React boilerplate` which is a great template for `Electron + React`. \
